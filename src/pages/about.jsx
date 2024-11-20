@@ -6,27 +6,27 @@ import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import Socials from "../components/about/socials";
 
-import INFO from "../data/user";
-import SEO from "../data/seo";
 
 import "./styles/about.css";
 
-const About = () => {
+const About = ({ data, pageSeo }) => {
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const currentSEO = SEO.find((item) => item.page === "about");
 
 	return (
 		<React.Fragment>
 			<Helmet>
-				<title>{`About | ${INFO.main.title}`}</title>
-				<meta name="description" content={currentSEO.description} />
-				<meta
-					name="keywords"
-					content={currentSEO.keywords.join(", ")}
-				/>
+				{data &&
+					<div><title>{`About | ${data.main.title}`}</title>
+						<meta name="description" content={pageSeo.description} />
+						<meta
+							name="keywords"
+							content={pageSeo.keywords.join(", ")}
+						/>
+					</div>}
 			</Helmet>
 
 			<div className="page-content">
@@ -42,22 +42,22 @@ const About = () => {
 						<div className="about-main">
 							<div className="about-right-side">
 								<div className="title about-title">
-									{INFO.about.title}
+									{data && data.about.title}
 								</div>
 
-								<div className="subtitle about-subtitle">
-									{INFO.about.description}
+								<div className="subtitle about-subtitle"> 
+									{data && data.about.description}
 								</div>
 							</div>
 
 							<div className="about-left-side">
 								<div className="about-image-container">
 									<div className="about-image-wrapper">
-										<img
-											src="about.jpg"
+										{data && <img
+											src={`data:image/png;base64,${data.image}`}
 											alt="about"
 											className="about-image"
-										/>
+										/>}		
 									</div>
 								</div>
 

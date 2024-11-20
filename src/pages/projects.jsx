@@ -6,27 +6,32 @@ import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import AllProjects from "../components/projects/allProjects";
 
-import INFO from "../data/user";
-import SEO from "../data/seo";
+
 
 import "./styles/projects.css";
 
-const Projects = () => {
+
+const Projects = ({ data, pageSeo }) => {
+
+
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const currentSEO = SEO.find((item) => item.page === "projects");
+
 
 	return (
 		<React.Fragment>
 			<Helmet>
-				<title>{`Projects | ${INFO.main.title}`}</title>
-				<meta name="description" content={currentSEO.description} />
-				<meta
-					name="keywords"
-					content={currentSEO.keywords.join(", ")}
-				/>
+				{data &&
+					<div>
+						<title>{`Projects | ${data.main.title}`}</title>
+						<meta name="description" content={pageSeo.description} />
+						<meta
+							name="keywords"
+							content={pageSeo.keywords.join(", ")}
+						/>
+					</div>}
 			</Helmet>
 
 			<div className="page-content">

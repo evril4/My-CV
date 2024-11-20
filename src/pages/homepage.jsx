@@ -17,21 +17,21 @@ import Article from "../components/homepage/article";
 import Works from "../components/homepage/works";
 import AllProjects from "../components/projects/allProjects";
 
-import INFO from "../data/user";
-import SEO from "../data/seo";
+
 import myArticles from "../data/articles";
 
-import "./styles/homepage.css";
+import "./styles/homepage.css"; 
 
-const Homepage = () => {
+const Homepage = ({data, pageSeo}) => {
+
 	const [stayLogo, setStayLogo] = useState(false);
 	const [logoSize, setLogoSize] = useState(80);
-	const [oldLogoSize, setOldLogoSize] = useState(80);
+	const [oldLogoSize, setOldLogoSize] = useState(80); 
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, []);
-
+	}, []); 
+ 
 	useEffect(() => {
 		const handleScroll = () => {
 			let scroll = Math.round(window.pageYOffset, 2);
@@ -56,8 +56,8 @@ const Homepage = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [logoSize, oldLogoSize]);
 
-	const currentSEO = SEO.find((item) => item.page === "home");
 
+	
 	const logoStyle = {
 		display: "flex",
 		position: stayLogo ? "fixed" : "relative",
@@ -71,12 +71,16 @@ const Homepage = () => {
 	return (
 		<React.Fragment>
 			<Helmet>
-				<title>{INFO.main.title}</title>
-				<meta name="description" content={currentSEO.description} />
-				<meta
-					name="keywords"
-					content={currentSEO.keywords.join(", ")}
-				/>
+				{pageSeo && (
+					<div>
+						<meta name="description" content={pageSeo.description} />
+						<meta
+							name="keywords"
+							content={pageSeo.keywords.join(", ")}
+						/>
+					</div>
+				)}
+
 			</Helmet>
 
 			<div className="page-content">
@@ -92,62 +96,67 @@ const Homepage = () => {
 						<div className="homepage-first-area">
 							<div className="homepage-first-area-left-side">
 								<div className="title homepage-title">
-									{INFO.homepage.title}
+									{data && data.homepage.title}
 								</div>
 
 								<div className="subtitle homepage-subtitle">
-									{INFO.homepage.description}
+									{data && data.homepage.description}
 								</div>
 							</div>
 
 							<div className="homepage-first-area-right-side">
 								<div className="homepage-image-container">
 									<div className="homepage-image-wrapper">
-										<img
-											src="homepage.jpg"
+										{data && <img
+											src={`data:image/png;base64,${data.image}`}
 											alt="about"
 											className="homepage-image"
-										/>
+										/>}
+
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div className="homepage-socials">
-							<a
-								href={INFO.socials.github}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faGithub}
-									className="homepage-social-icon"
-								/>
-							</a>
-							<a
-								href={INFO.socials.instagram}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faInstagram}
-									className="homepage-social-icon"
-								/>
-							</a>
-							<a
-								href={`mailto:${INFO.main.email}`}
-								target="_blank"
-								rel="noreferrer"
-							>
-								<FontAwesomeIcon
-									icon={faMailBulk}
-									className="homepage-social-icon"
-								/>
-							</a>
+							{data &&
+								<div>
+									<a
+										href={data.socials.github}
+										target="_blank"
+										rel="noreferrer"
+									>
+										<FontAwesomeIcon
+											icon={faGithub}
+											className="homepage-social-icon"
+										/>
+									</a>
+									<a
+										href={data.socials.instagram}
+										target="_blank"
+										rel="noreferrer"
+									>
+										<FontAwesomeIcon
+											icon={faInstagram}
+											className="homepage-social-icon"
+										/>
+									</a>
+
+									<a
+										href={`mailto:${data.main.email}`}
+										target="_blank"
+										rel="noreferrer"
+									>
+										<FontAwesomeIcon
+											icon={faMailBulk}
+											className="homepage-social-icon"
+										/>
+									</a>
+								</div>}
 						</div>
 
 						<div className="homepage-projects">
-							<AllProjects />
+							{data && <AllProjects data={data} />}
 						</div>
 
 						<div className="page-footer">
